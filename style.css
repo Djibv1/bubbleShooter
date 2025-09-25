@@ -17,10 +17,6 @@ body {
   filter: hue-rotate(0deg);
 }
 
-bubble:hover {
-  cursor: 2em crosshair;
-}
-
 h3 {
   z-index: 1;
   font-size: 10rem;
