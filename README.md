@@ -1,4 +1,4 @@
-Modifier styles de la page
+Modifier styles de la page comme backgrounds, buttons etc
 
 Rajouter effet visuel au clic ?
 
