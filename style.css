@@ -1,0 +1,176 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  overflow: hidden;
+  height: 100vh;
+  cursor: crosshair;
+}
+h3 {
+  justify-self: center;
+  z-index: 1;
+  max-width: fit-content;
+  font-size: 10rem;
+  text-align: center;
+  color: rgba(128, 128, 128, 0.571);
+}
+.chooseGameMode {
+  display: flex;
+  width: 100%;
+  height: 15vh;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 2rem;
+  background-color: rgba(0, 0, 0, 0.648);
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.chooseGameMode.hidden {
+  opacity: 0;
+  z-index: -10;
+}
+
+.buttons {
+  z-index: 10;
+  display: flex;
+  position: absolute;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  bottom: 50px;
+  justify-self: center;
+  gap: 5vw;
+}
+#B1 {
+  background-color: rgb(139, 218, 139);
+
+  padding: 5px 10px;
+}
+
+#B2 {
+  background-color: yellow;
+
+  padding: 5px 10px;
+}
+#B3 {
+  background-color: red;
+  padding: 5px 10px;
+}
+
+/* General */
+.bubble {
+  position: absolute;
+  border-radius: 300px;
+  background: #d40505;
+  opacity: 0;
+  filter: hue-rotate(0deg);
+}
+
+.specialBubble {
+  position: absolute;
+  border-radius: 300px;
+  background: rgb(227, 178, 53);
+  opacity: 1;
+}
+
+/* easy */
+.easyBubble {
+  border-radius: 300px;
+  background: #d40505;
+  opacity: 0;
+  filter: hue-rotate(0deg);
+  animation: easyAnim 10s forwards;
+  filter: hue-rotate(0deg);
+}
+
+.specialEasyBubble {
+  border-radius: 300px;
+  background: rgb(227, 178, 53);
+  opacity: 1;
+  animation: specialEasyAnim 8s forwards;
+}
+
+@keyframes easyAnim {
+  to {
+    top: -350px;
+    left: var(--left);
+    opacity: 1;
+    filter: hue-rotate(720deg);
+  }
+}
+
+@keyframes specialEasyAnim {
+  to {
+    top: -350px;
+    left: var(--left);
+  }
+}
+
+/* Medium */
+.mediumBubble {
+  border-radius: 300px;
+  background: #d40505;
+  opacity: 0;
+  filter: hue-rotate(0deg);
+  animation: mediumAnim 6s forwards;
+  filter: hue-rotate(0deg);
+}
+
+.specialMediumBubble {
+  border-radius: 300px;
+  background: rgb(227, 178, 53);
+  opacity: 1;
+  animation: specialMediumAnim 4s forwards;
+}
+
+@keyframes mediumAnim {
+  to {
+    top: -350px;
+    left: var(--left);
+    opacity: 1;
+    filter: hue-rotate(720deg);
+  }
+}
+
+@keyframes specialMediumAnim {
+  to {
+    top: -350px;
+    left: var(--left);
+  }
+}
+
+/* Hard */
+.hardBubble {
+  border-radius: 300px;
+  background: #d40505;
+  opacity: 0;
+  filter: hue-rotate(0deg);
+  animation: hardAnim 4s forwards;
+  filter: hue-rotate(0deg);
+}
+
+.specialHardBubble {
+  border-radius: 300px;
+  background: rgb(227, 178, 53);
+  opacity: 1;
+  animation: specialHardAnim 2s forwards;
+}
+
+@keyframes hardAnim {
+  to {
+    top: -350px;
+    left: var(--left);
+    opacity: 1;
+    filter: hue-rotate(720deg);
+  }
+}
+
+@keyframes specialHardAnim {
+  to {
+    top: -350px;
+    left: var(--left);
+  }
+}
