@@ -61,7 +61,7 @@ h3 {
   position: absolute;
   border-radius: 300px;
   background: #d40505;
-  opacity: 0;
+  opacity: 1;
   filter: hue-rotate(0deg);
 }
 
@@ -76,7 +76,7 @@ h3 {
 .easyBubble {
   border-radius: 300px;
   background: #d40505;
-  opacity: 0;
+  opacity: 1;
   filter: hue-rotate(0deg);
   animation: easyAnim 10s forwards;
   filter: hue-rotate(0deg);
@@ -109,7 +109,7 @@ h3 {
 .mediumBubble {
   border-radius: 300px;
   background: #d40505;
-  opacity: 0;
+  opacity: 1;
   filter: hue-rotate(0deg);
   animation: mediumAnim 6s forwards;
   filter: hue-rotate(0deg);
@@ -142,7 +142,7 @@ h3 {
 .hardBubble {
   border-radius: 300px;
   background: #d40505;
-  opacity: 0;
+  opacity: 1;
   filter: hue-rotate(0deg);
   animation: hardAnim 4s forwards;
   filter: hue-rotate(0deg);

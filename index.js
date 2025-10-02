@@ -6,7 +6,6 @@ let modeActive = false;
 
 if (chooseGameMode) {
   chooseGameMode.addEventListener("click", () => {
-    console.log("banner");
     chooseGameMode.classList.add("hidden");
   });
 }
@@ -17,14 +16,12 @@ function stopGame() {
   intervals.forEach((id) => clearInterval(id));
   intervals = [];
   const bulles = document.querySelectorAll("span.bubble, span.specialBubble");
-  bulles.forEach(function (b) {
-    b.remove();
-  });
+  bulles.forEach((b) => b.remove());
   counter = 0;
   counterDisplay.textContent = counter;
 }
 
-// Lancer un mode
+// Lancer mode
 function startMode(mode) {
   stopGame();
   modeActive = true;
@@ -33,9 +30,44 @@ function startMode(mode) {
   else if (mode === "hard") hardMode();
 }
 
-const easyMode = () => {
-  console.log(startMode);
+function animateBubble(bubble, speedY) {
+  let x = parseFloat(bubble.style.left);
+  let y = parseFloat(bubble.style.top);
 
+  const angle = (Math.random() * 90 - 60) * (Math.PI / 180);
+  let vx = Math.sin(angle) * speedY;
+  let vy = -Math.cos(angle) * speedY;
+
+  function step() {
+    x += vx;
+    y += vy;
+
+    if (
+      y + bubble.offsetHeight < 0 || // sortie par le haut
+      x + bubble.offsetWidth < 0 || // sortie gauche
+      x > window.innerWidth // sortie droite
+    ) {
+      bubble.remove();
+      return;
+    }
+
+    if (x < 0 || x + bubble.offsetWidth > window.innerWidth) {
+      vx = -vx;
+      // on garde la bulle dans la fenêtre sans "téléporter"
+      x = Math.max(0, Math.min(window.innerWidth - bubble.offsetWidth, x));
+    }
+
+    bubble.style.left = x + "px";
+    bubble.style.top = y + "px";
+
+    requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
+
+// easyMode
+function easyMode() {
   document.body.style.background = "rgba(148, 236, 161, 0.571)";
   chooseGameMode.classList.add("hidden");
 
@@ -44,15 +76,13 @@ const easyMode = () => {
     bubble.classList.add("bubble", "easyBubble");
     document.body.appendChild(bubble);
 
-    const size = Math.random() * 200 + 100 + "px";
-    bubble.style.height = size;
-    bubble.style.width = size;
+    const size = Math.random() * 100 + 150; // 150 à 250px
+    bubble.style.width = size + "px";
+    bubble.style.height = size + "px";
 
-    bubble.style.top = Math.random() * 100 + 100 + "%";
-    bubble.style.left = Math.random() * 100 + "%";
-
-    const plusMinus = Math.random() > 0.5 ? 1 : -1;
-    bubble.style.setProperty("--left", Math.random() * 100 * plusMinus + "%");
+    const maxLeft = window.innerWidth - size;
+    bubble.style.left = Math.random() * maxLeft + "px";
+    bubble.style.top = window.innerHeight + size + "px";
 
     bubble.addEventListener("click", () => {
       counter++;
@@ -60,34 +90,24 @@ const easyMode = () => {
       bubble.remove();
     });
 
-    setTimeout(() => {
-      bubble.remove();
-    }, 10000);
+    animateBubble(bubble, 1.5);
   };
 
-  setInterval(bubbleMaker, Math.random() * 2000);
+  intervals.push(setInterval(bubbleMaker, 2000));
 
+  // special bubble
   const specialBubbleMaker = () => {
     const specialBubble = document.createElement("span");
     specialBubble.classList.add("specialBubble", "specialEasyBubble");
     document.body.appendChild(specialBubble);
-    console.log(specialBubble);
 
-    const size = Math.random() * 100 + 100 + "px";
-    specialBubble.style.height = size;
-    specialBubble.style.width = size;
-    console.log(specialBubble);
+    const size = Math.random() * 100 + 180; // 180 à 280px
+    specialBubble.style.width = size + "px";
+    specialBubble.style.height = size + "px";
 
-    specialBubble.style.top = Math.random() * 100 + 100 + "%";
-    specialBubble.style.left = Math.random() * 100 + "%";
-    console.log(specialBubble);
-
-    const plusMinus = Math.random() > 0.5 ? 1 : -1;
-    specialBubble.style.setProperty(
-      "--left",
-      Math.random() * 100 * plusMinus + "%"
-    );
-    console.log(specialBubble);
+    const maxLeft = window.innerWidth - size;
+    specialBubble.style.left = Math.random() * maxLeft + "px";
+    specialBubble.style.top = window.innerHeight + size + "px";
 
     specialBubble.addEventListener("click", () => {
       counter += 6;
@@ -95,16 +115,14 @@ const easyMode = () => {
       specialBubble.remove();
     });
 
-    setTimeout(() => {
-      specialBubble.remove();
-    }, 7000);
+    animateBubble(specialBubble, 2);
   };
 
-  setInterval(specialBubbleMaker, Math.random() * 30000);
-};
+  intervals.push(setInterval(specialBubbleMaker, Math.random() * 5000 + 10000));
+}
 
-// MEdium
-const mediumMode = () => {
+// mediumMode
+function mediumMode() {
   document.body.style.background = "rgba(252, 241, 38, 0.57)";
   chooseGameMode.classList.add("hidden");
 
@@ -113,15 +131,13 @@ const mediumMode = () => {
     bubble.classList.add("bubble", "mediumBubble");
     document.body.appendChild(bubble);
 
-    const size = Math.random() * 200 + 100 + "px";
-    bubble.style.height = size;
-    bubble.style.width = size;
+    const size = Math.random() * 80 + 100; // 100 à 180px
+    bubble.style.width = size + "px";
+    bubble.style.height = size + "px";
 
-    bubble.style.top = Math.random() * 100 + 100 + "%";
-    bubble.style.left = Math.random() * 100 + "%";
-
-    const plusMinus = Math.random() > 0.5 ? 1 : -1;
-    bubble.style.setProperty("--left", Math.random() * 100 * plusMinus + "%");
+    const maxLeft = window.innerWidth - size;
+    bubble.style.left = Math.random() * maxLeft + "px";
+    bubble.style.top = window.innerHeight + size + "px";
 
     bubble.addEventListener("click", () => {
       counter++;
@@ -129,30 +145,23 @@ const mediumMode = () => {
       bubble.remove();
     });
 
-    setTimeout(() => {
-      bubble.remove();
-    }, 10000);
+    animateBubble(bubble, 2.5);
   };
 
-  setInterval(bubbleMaker, Math.random() * 5000);
+  intervals.push(setInterval(bubbleMaker, 2500));
 
   const specialBubbleMaker = () => {
     const specialBubble = document.createElement("span");
     specialBubble.classList.add("specialBubble", "specialMediumBubble");
     document.body.appendChild(specialBubble);
 
-    const size = Math.random() * 100 + 100 + "px";
-    specialBubble.style.height = size;
-    specialBubble.style.width = size;
+    const size = Math.random() * 80 + 130; // 130 à 210px
+    specialBubble.style.width = size + "px";
+    specialBubble.style.height = size + "px";
 
-    specialBubble.style.top = Math.random() * 100 + 100 + "%";
-    specialBubble.style.left = Math.random() * 100 + "%";
-
-    const plusMinus = Math.random() > 0.5 ? 1 : -1;
-    specialBubble.style.setProperty(
-      "--left",
-      Math.random() * 100 * plusMinus + "%"
-    );
+    const maxLeft = window.innerWidth - size;
+    specialBubble.style.left = Math.random() * maxLeft + "px";
+    specialBubble.style.top = window.innerHeight + size + "px";
 
     specialBubble.addEventListener("click", () => {
       counter += 6;
@@ -160,33 +169,29 @@ const mediumMode = () => {
       specialBubble.remove();
     });
 
-    setTimeout(() => {
-      specialBubble.remove();
-    }, 4000);
+    animateBubble(specialBubble, 3);
   };
 
-  setInterval(specialBubbleMaker, Math.random() * 50000);
-};
+  intervals.push(setInterval(specialBubbleMaker, Math.random() * 5000 + 12000));
+}
 
-// Hard
-
-const hardMode = () => {
+// hardMode
+function hardMode() {
   document.body.style.background = "rgba(232, 132, 107, 0.57)";
   chooseGameMode.classList.add("hidden");
+
   const bubbleMaker = () => {
     const bubble = document.createElement("span");
     bubble.classList.add("bubble", "hardBubble");
     document.body.appendChild(bubble);
 
-    const size = Math.random() * 200 + 100 + "px";
-    bubble.style.height = size;
-    bubble.style.width = size;
+    const size = Math.random() * 50 + 70; // 70 à 120px
+    bubble.style.width = size + "px";
+    bubble.style.height = size + "px";
 
-    bubble.style.top = Math.random() * 100 + 100 + "%";
-    bubble.style.left = Math.random() * 100 + "%";
-
-    const plusMinus = Math.random() > 0.5 ? 1 : -1;
-    bubble.style.setProperty("--left", Math.random() * 100 * plusMinus + "%");
+    const maxLeft = window.innerWidth - size;
+    bubble.style.left = Math.random() * maxLeft + "px";
+    bubble.style.top = window.innerHeight + size + "px";
 
     bubble.addEventListener("click", () => {
       counter++;
@@ -194,30 +199,23 @@ const hardMode = () => {
       bubble.remove();
     });
 
-    setTimeout(() => {
-      bubble.remove();
-    }, 10000);
+    animateBubble(bubble, 3.5);
   };
 
-  setInterval(bubbleMaker, Math.random() * 8000);
+  intervals.push(setInterval(bubbleMaker, 1000));
 
   const specialBubbleMaker = () => {
     const specialBubble = document.createElement("span");
     specialBubble.classList.add("specialBubble", "specialHardBubble");
     document.body.appendChild(specialBubble);
 
-    const size = Math.random() * 100 + 100 + "px";
-    specialBubble.style.height = size;
-    specialBubble.style.width = size;
+    const size = Math.random() * 50 + 100; // 100 à 150px
+    specialBubble.style.width = size + "px";
+    specialBubble.style.height = size + "px";
 
-    specialBubble.style.top = Math.random() * 100 + 100 + "%";
-    specialBubble.style.left = Math.random() * 100 + "%";
-
-    const plusMinus = Math.random() > 0.5 ? 1 : -1;
-    specialBubble.style.setProperty(
-      "--left",
-      Math.random() * 100 * plusMinus + "%"
-    );
+    const maxLeft = window.innerWidth - size;
+    specialBubble.style.left = Math.random() * maxLeft + "px";
+    specialBubble.style.top = window.innerHeight + size + "px";
 
     specialBubble.addEventListener("click", () => {
       counter += 6;
@@ -225,13 +223,13 @@ const hardMode = () => {
       specialBubble.remove();
     });
 
-    setTimeout(() => {
-      specialBubble.remove();
-    }, 7000);
+    animateBubble(specialBubble, 4);
   };
 
-  setInterval(specialBubbleMaker, Math.random() * 60000);
-};
+  intervals.push(setInterval(specialBubbleMaker, Math.random() * 5000 + 15000));
+}
+
+// perdre des points si clic ailleurs
 window.addEventListener("click", (e) => {
   if (
     modeActive &&
