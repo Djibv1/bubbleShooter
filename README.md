@@ -1,7 +1,10 @@
-Modifier styles de la page comme backgrounds, buttons etc
+Styles :
 
-Rajouter effet visuel au clic ?
+- Modifier backgrounds, buttons etc
+- Rajouter effet visuel au clic ?
 
-Un système de défi ?
+Fonctionnement :
 
-Rajouter chrono pour défi ou boost des bulles spéciales
+- Rajouter système de défi
+- Rajouter chrono pour le défi
+- Rajouter un boost de points des bulles spéciales (système à définir)
