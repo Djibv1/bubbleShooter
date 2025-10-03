@@ -93,7 +93,7 @@ function easyMode() {
     animateBubble(bubble, 1.5);
   };
 
-  intervals.push(setInterval(bubbleMaker, 2000));
+  intervals.push(setInterval(bubbleMaker, 1500));
 
   // special bubble
   const specialBubbleMaker = () => {
@@ -101,7 +101,7 @@ function easyMode() {
     specialBubble.classList.add("specialBubble", "specialEasyBubble");
     document.body.appendChild(specialBubble);
 
-    const size = Math.random() * 100 + 180; // 180 à 280px
+    const size = Math.random() * 100 + 180;
     specialBubble.style.width = size + "px";
     specialBubble.style.height = size + "px";
 

@@ -62,7 +62,6 @@ h3 {
   border-radius: 300px;
   background: #d40505;
   opacity: 1;
-  filter: hue-rotate(0deg);
 }
 
 .specialBubble {
@@ -77,32 +76,12 @@ h3 {
   border-radius: 300px;
   background: #d40505;
   opacity: 1;
-  filter: hue-rotate(0deg);
-  animation: easyAnim 10s forwards;
-  filter: hue-rotate(0deg);
 }
 
 .specialEasyBubble {
   border-radius: 300px;
   background: rgb(227, 178, 53);
   opacity: 1;
-  animation: specialEasyAnim 8s forwards;
-}
-
-@keyframes easyAnim {
-  to {
-    top: -350px;
-    left: var(--left);
-    opacity: 1;
-    filter: hue-rotate(720deg);
-  }
-}
-
-@keyframes specialEasyAnim {
-  to {
-    top: -350px;
-    left: var(--left);
-  }
 }
 
 /* Medium */
@@ -110,32 +89,12 @@ h3 {
   border-radius: 300px;
   background: #d40505;
   opacity: 1;
-  filter: hue-rotate(0deg);
-  animation: mediumAnim 6s forwards;
-  filter: hue-rotate(0deg);
 }
 
 .specialMediumBubble {
   border-radius: 300px;
   background: rgb(227, 178, 53);
   opacity: 1;
-  animation: specialMediumAnim 4s forwards;
-}
-
-@keyframes mediumAnim {
-  to {
-    top: -350px;
-    left: var(--left);
-    opacity: 1;
-    filter: hue-rotate(720deg);
-  }
-}
-
-@keyframes specialMediumAnim {
-  to {
-    top: -350px;
-    left: var(--left);
-  }
 }
 
 /* Hard */
@@ -143,30 +102,10 @@ h3 {
   border-radius: 300px;
   background: #d40505;
   opacity: 1;
-  filter: hue-rotate(0deg);
-  animation: hardAnim 4s forwards;
-  filter: hue-rotate(0deg);
 }
 
 .specialHardBubble {
   border-radius: 300px;
   background: rgb(227, 178, 53);
   opacity: 1;
-  animation: specialHardAnim 2s forwards;
-}
-
-@keyframes hardAnim {
-  to {
-    top: -350px;
-    left: var(--left);
-    opacity: 1;
-    filter: hue-rotate(720deg);
-  }
-}
-
-@keyframes specialHardAnim {
-  to {
-    top: -350px;
-    left: var(--left);
-  }
 }
