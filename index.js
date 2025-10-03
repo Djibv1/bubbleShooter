@@ -43,9 +43,9 @@ function animateBubble(bubble, speedY) {
     y += vy;
 
     if (
-      y + bubble.offsetHeight < 0 || // sortie par le haut
-      x + bubble.offsetWidth < 0 || // sortie gauche
-      x > window.innerWidth // sortie droite
+      y + bubble.offsetHeight < 0 ||
+      x + bubble.offsetWidth < 0 ||
+      x > window.innerWidth
     ) {
       bubble.remove();
       return;
@@ -53,7 +53,6 @@ function animateBubble(bubble, speedY) {
 
     if (x < 0 || x + bubble.offsetWidth > window.innerWidth) {
       vx = -vx;
-      // on garde la bulle dans la fenêtre sans "téléporter"
       x = Math.max(0, Math.min(window.innerWidth - bubble.offsetWidth, x));
     }
 
@@ -76,7 +75,7 @@ function easyMode() {
     bubble.classList.add("bubble", "easyBubble");
     document.body.appendChild(bubble);
 
-    const size = Math.random() * 100 + 150; // 150 à 250px
+    const size = Math.random() * 100 + 150;
     bubble.style.width = size + "px";
     bubble.style.height = size + "px";
 
@@ -131,7 +130,7 @@ function mediumMode() {
     bubble.classList.add("bubble", "mediumBubble");
     document.body.appendChild(bubble);
 
-    const size = Math.random() * 80 + 100; // 100 à 180px
+    const size = Math.random() * 80 + 100;
     bubble.style.width = size + "px";
     bubble.style.height = size + "px";
 
@@ -155,7 +154,7 @@ function mediumMode() {
     specialBubble.classList.add("specialBubble", "specialMediumBubble");
     document.body.appendChild(specialBubble);
 
-    const size = Math.random() * 80 + 130; // 130 à 210px
+    const size = Math.random() * 80 + 130;
     specialBubble.style.width = size + "px";
     specialBubble.style.height = size + "px";
 
@@ -185,7 +184,7 @@ function hardMode() {
     bubble.classList.add("bubble", "hardBubble");
     document.body.appendChild(bubble);
 
-    const size = Math.random() * 50 + 70; // 70 à 120px
+    const size = Math.random() * 50 + 70;
     bubble.style.width = size + "px";
     bubble.style.height = size + "px";
 
@@ -209,7 +208,7 @@ function hardMode() {
     specialBubble.classList.add("specialBubble", "specialHardBubble");
     document.body.appendChild(specialBubble);
 
-    const size = Math.random() * 50 + 100; // 100 à 150px
+    const size = Math.random() * 50 + 100;
     specialBubble.style.width = size + "px";
     specialBubble.style.height = size + "px";
 
