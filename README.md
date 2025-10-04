@@ -1,7 +1,5 @@
 Styles :
 
-- Style et couleurs des bulles random ?
-- Modifier backgrounds, buttons etc
 - Rajouter effet visuel au clic ?
 - Rajouter que les bulles dorées valent 5 points
 

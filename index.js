@@ -1,6 +1,8 @@
 const counterDisplay = document.querySelector("h3");
 let counter = 0;
 let intervals = [];
+const instructions = document.querySelector(".instructions");
+
 const chooseGameMode = document.querySelector(".chooseGameMode");
 let modeActive = false;
 
@@ -9,6 +11,13 @@ if (chooseGameMode) {
     chooseGameMode.classList.add("hidden");
   });
 }
+
+if (instructions) {
+  instructions.addEventListener("click", () => {
+    instructions.classList.add("hidden");
+  });
+}
+
 function randomColor() {
   return "#" + Math.floor(Math.random() * 16777215).toString(16);
 }
@@ -69,7 +78,6 @@ function animateBubble(bubble, speedY) {
 
 // easyMode
 function easyMode() {
-  document.body.style.background = "rgba(148, 236, 161, 0.571)";
   chooseGameMode.classList.add("hidden");
 
   const bubbleMaker = () => {
@@ -234,11 +242,17 @@ function hardMode() {
 
 // perdre des points si clic ailleurs
 window.addEventListener("click", (e) => {
+  console.log(e.target);
+
   if (
     modeActive &&
     !e.target.classList.contains("bubble") &&
     !e.target.classList.contains("button") &&
+    !e.target.classList.contains("button-outer") &&
+    !e.target.classList.contains("button-inner") &&
+    !e.target.classList.contains("display") &&
     !e.target.classList.contains("counter") &&
+    !e.target.classList.contains("instructions") &&
     !e.target.classList.contains("chooseGameMode")
   ) {
     counter--;

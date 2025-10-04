@@ -7,20 +7,35 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h3 class="counter">0</h3>
+    <div id="bg">
+      <h3 class="counter">0</h3>
+      <p class="instructions">Rules :</p>
 
-    <p class="chooseGameMode">Choisissez votre niveau de difficulté :</p>
+      <p class="chooseGameMode">Choose your level :</p>
 
-    <div class="buttons">
-      <button class="button" id="B1" onclick="startMode('easy')">
-        Easy Mode
-      </button>
-      <button class="button" id="B2" onclick="startMode('medium')">
-        Medium Mode
-      </button>
-      <button class="button" id="B3" onclick="startMode('hard')">
-        Hard Mode
-      </button>
+      <div class="buttons">
+        <button class="button" id="B1" onclick="startMode('easy')">
+          <div class="button-outer">
+            <div class="button-inner">
+              <span class="display">Easy Mode</span>
+            </div>
+          </div>
+        </button>
+        <button class="button" id="B2" onclick="startMode('medium')">
+          <div class="button-outer">
+            <div class="button-inner">
+              <span class="display">Medium Mode</span>
+            </div>
+          </div>
+        </button>
+        <button class="button" id="B3" onclick="startMode('hard')">
+          <div class="button-outer">
+            <div class="button-inner">
+              <span class="display">Hard Mode</span>
+            </div>
+          </div>
+        </button>
+      </div>
     </div>
 
     <script src="index.js"></script>
