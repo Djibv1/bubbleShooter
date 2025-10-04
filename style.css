@@ -7,6 +7,9 @@ body {
   height: 100vh;
   cursor: crosshair;
   background: url("docs/images/1781.jpg") no-repeat center/106%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #bg {
@@ -17,9 +20,9 @@ body {
 
 h3 {
   position: absolute;
+  justify-self: center;
+  max-width: fit-content;
   z-index: 2;
-  max-width: 10%;
-  margin-left: 45%;
   font-size: 10rem;
   color: rgb(0, 0, 0);
 }
@@ -70,16 +73,16 @@ h3 {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  justify-self: center;
   bottom: 2vh;
-  width: 100%;
   gap: 5vw;
 }
-/* From Uiverse.io by FColombati */
+
+/* Buttons  */
 .button {
   all: unset;
   cursor: pointer;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  position: relative;
   border-radius: 100em;
   background-color: rgba(0, 0, 0, 0.75);
   box-shadow: -0.15em -0.15em 0.15em -0.075em rgba(5, 5, 5, 0.25),
@@ -124,7 +127,6 @@ h3 {
 
 .button-inner {
   --inset: 0.035em;
-  position: relative;
   z-index: 1;
   border-radius: inherit;
   padding: 1em 1.5em;
@@ -160,7 +162,6 @@ h3 {
 }
 
 .button .button-inner span {
-  position: relative;
   z-index: 4;
   font-family: "Inter", sans-serif;
   letter-spacing: -0.05em;
@@ -208,7 +209,7 @@ h3 {
 }
 
 #B3 {
-  background-image: linear-gradient(135deg, rgb(241, 2, 2), rgb(207, 129, 20));
+  background-image: linear-gradient(135deg, rgb(241, 2, 2), rgb(244, 122, 89));
 }
 
 /* General */

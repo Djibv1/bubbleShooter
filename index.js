@@ -134,7 +134,6 @@ function easyMode() {
 
 // mediumMode
 function mediumMode() {
-  document.body.style.background = "rgba(252, 241, 38, 0.57)";
   chooseGameMode.classList.add("hidden");
 
   const bubbleMaker = () => {
@@ -188,7 +187,6 @@ function mediumMode() {
 
 // hardMode
 function hardMode() {
-  document.body.style.background = "rgba(232, 132, 107, 0.57)";
   chooseGameMode.classList.add("hidden");
 
   const bubbleMaker = () => {
