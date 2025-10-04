@@ -9,6 +9,10 @@ if (chooseGameMode) {
     chooseGameMode.classList.add("hidden");
   });
 }
+const colors = ["#FF6B6B", "#6BCB77", "#4D96FF", "#FFD93D", "#9D4EDD"];
+function randomColor() {
+  return colors[Math.floor(Math.random() * colors.length)];
+}
 
 // Nettoyage des bulles et intervalles
 function stopGame() {
@@ -73,6 +77,7 @@ function easyMode() {
   const bubbleMaker = () => {
     const bubble = document.createElement("span");
     bubble.classList.add("bubble", "easyBubble");
+    bubble.style.backgroundColor = randomColor();
     document.body.appendChild(bubble);
 
     const size = Math.random() * 100 + 150;
@@ -128,6 +133,7 @@ function mediumMode() {
   const bubbleMaker = () => {
     const bubble = document.createElement("span");
     bubble.classList.add("bubble", "mediumBubble");
+    bubble.style.backgroundColor = randomColor();
     document.body.appendChild(bubble);
 
     const size = Math.random() * 80 + 100;
@@ -182,6 +188,7 @@ function hardMode() {
   const bubbleMaker = () => {
     const bubble = document.createElement("span");
     bubble.classList.add("bubble", "hardBubble");
+    bubble.style.backgroundColor = randomColor();
     document.body.appendChild(bubble);
 
     const size = Math.random() * 50 + 70;
