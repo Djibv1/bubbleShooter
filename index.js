@@ -5,9 +5,14 @@ let counter = 0;
 let modeActive = false;
 let intervals = [];
 
+// Détection du mobile
+const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+// Couleur aléatoire
 const randomColor = () =>
   "#" + Math.floor(Math.random() * 16777215).toString(16);
 
+// Réinitialisation du jeu
 const resetGame = () => {
   modeActive = false;
   intervals.forEach(clearInterval);
@@ -19,22 +24,9 @@ const resetGame = () => {
   counterDisplay.textContent = 0;
 };
 
-function startMode(mode) {
-  resetGame();
-  modeActive = true;
-
-  // Activation d boutons
-  document
-    .querySelectorAll(".button")
-    .forEach((btn) => btn.classList.remove("active"));
-  document
-    .querySelector(`#B${mode === "easy" ? 1 : mode === "medium" ? 2 : 3}`)
-    ?.classList.add("active");
-
-  instructions?.remove();
-  chooseGameMode?.remove();
-
-  const settings = {
+// Paramètres adaptatifs selon mode + écran
+function getSettings(mode) {
+  const baseSettings = {
     easy: {
       bubbleInterval: 1500,
       speed: 1.5,
@@ -61,9 +53,40 @@ function startMode(mode) {
     },
   }[mode];
 
+  // Ajustement pour mobile
+  if (isMobile) {
+    baseSettings.speed *= 0.7;
+    baseSettings.bubbleInterval *= 1.5;
+    baseSettings.sizeMin *= 0.7;
+    baseSettings.sizeRange *= 0.7;
+    baseSettings.specialMin *= 1.2;
+    baseSettings.specialMax *= 1.2;
+  }
+
+  return baseSettings;
+}
+
+// Démarrage d'un mode
+function startMode(mode) {
+  resetGame();
+  modeActive = true;
+
+  // Activation boutons
+  document
+    .querySelectorAll(".button")
+    .forEach((btn) => btn.classList.remove("active"));
+  document
+    .querySelector(`#B${mode === "easy" ? 1 : mode === "medium" ? 2 : 3}`)
+    ?.classList.add("active");
+
+  instructions?.remove();
+  chooseGameMode?.remove();
+
+  const settings = getSettings(mode);
   spawnBubbles(settings, mode);
 }
 
+// Animation bulles
 function animateBubble(bubble, vx, vy) {
   const step = () => {
     let x = parseFloat(bubble.style.left);
@@ -72,7 +95,6 @@ function animateBubble(bubble, vx, vy) {
     x += vx;
     y += vy;
 
-    // rebond + suppression qd hors écran
     if (x < 0 || x + bubble.offsetWidth > window.innerWidth) vx = -vx;
     if (
       y + bubble.offsetHeight < 0 ||
@@ -90,7 +112,7 @@ function animateBubble(bubble, vx, vy) {
   requestAnimationFrame(step);
 }
 
-/* Génération de bulles */
+// Création de bulles
 function createBubble(isSpecial, speed, sizeMin, sizeRange, mode) {
   const bubble = document.createElement("span");
   const size = Math.random() * sizeRange + sizeMin;
@@ -113,11 +135,15 @@ function createBubble(isSpecial, speed, sizeMin, sizeRange, mode) {
   const vx = Math.sin(angle) * speed;
   const vy = -Math.cos(angle) * speed;
 
-  bubble.addEventListener("click", () => handleBubbleClick(bubble, isSpecial));
+  // Evénement click ou touch
+  const handleClick = () => handleBubbleClick(bubble, isSpecial);
+  bubble.addEventListener("click", handleClick);
+  if (isMobile) bubble.addEventListener("touchstart", handleClick);
 
   animateBubble(bubble, vx, vy);
 }
 
+// Gestion score
 function handleBubbleClick(bubble, isSpecial) {
   bubble.remove();
   counter += isSpecial ? 5 : 1;
@@ -131,27 +157,25 @@ function handleBubbleClick(bubble, isSpecial) {
   );
 }
 
-/*  spawn bulles et bulles spéciales */
+// Spawn bulles
 function spawnBubbles(
   { bubbleInterval, speed, specialMin, specialMax, sizeMin, sizeRange },
   mode
 ) {
   intervals.push(
-    setInterval(() => {
-      createBubble(false, speed, sizeMin, sizeRange, mode);
-    }, bubbleInterval)
+    setInterval(
+      () => createBubble(false, speed, sizeMin, sizeRange, mode),
+      bubbleInterval
+    )
   );
 
   const specialDelays = {
     easy: { min: 5000, max: 20000 },
-
     medium: { min: 8000, max: 25000 },
-
     hard: { min: 10000, max: 30000 },
   };
 
   const { min, max } = specialDelays[mode];
-
   const initialSpecialDelay = Math.random() * (max - min) + min;
 
   setTimeout(() => {
@@ -172,10 +196,11 @@ function spawnBubbles(
   }, initialSpecialDelay);
 }
 
+// Capitalize helper
 const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
-/* malus si clic ailleurs + croix rouge */
-window.addEventListener("click", (e) => {
+// Malus clic hors bulles
+const handleMissClick = (e) => {
   if (!modeActive) return;
 
   const ignored = [
@@ -187,23 +212,19 @@ window.addEventListener("click", (e) => {
     "display",
     "counter",
   ];
-
   const isAllowed = ignored.some((cls) => e.target.classList.contains(cls));
+  if (isAllowed) return;
 
-  if (!isAllowed) {
-    // Décrémenter le score
-    counter--;
-    counterDisplay.textContent = counter;
+  counter--;
+  counterDisplay.textContent = counter;
 
-    // Afficher une petite croix rouge à la position du clic
-    const cross = document.createElement("div");
-    cross.classList.add("error-cross");
-    cross.style.left = `${e.clientX}px`;
-    cross.style.top = `${e.clientY}px`;
+  const cross = document.createElement("div");
+  cross.classList.add("error-cross");
+  cross.style.left = `${e.clientX}px`;
+  cross.style.top = `${e.clientY}px`;
+  document.body.appendChild(cross);
+  setTimeout(() => cross.remove(), 1000);
+};
 
-    document.body.appendChild(cross);
-
-    // Supprimer la croix après 1s
-    setTimeout(() => cross.remove(), 1000);
-  }
-});
+window.addEventListener("click", handleMissClick);
+if (isMobile) window.addEventListener("touchstart", handleMissClick);
