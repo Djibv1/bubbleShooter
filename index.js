@@ -55,7 +55,7 @@ function getSettings(mode) {
 
   // Ajustement pour mobile
   if (isMobile) {
-    baseSettings.speed *= 0.7;
+    baseSettings.speed *= 1.5;
     baseSettings.bubbleInterval *= 1.5;
     baseSettings.sizeMin *= 0.7;
     baseSettings.sizeRange *= 0.7;
@@ -218,13 +218,24 @@ const handleMissClick = (e) => {
   counter--;
   counterDisplay.textContent = counter;
 
+  // Détection de la position selon device
+  let x, y;
+  if (e.type === "touchstart") {
+    const touch = e.touches[0];
+    x = touch.clientX;
+    y = touch.clientY;
+  } else {
+    x = e.clientX;
+    y = e.clientY;
+  }
+
   const cross = document.createElement("div");
   cross.classList.add("error-cross");
-  cross.style.left = `${e.clientX}px`;
-  cross.style.top = `${e.clientY}px`;
+  cross.style.left = `${x}px`;
+  cross.style.top = `${y}px`;
   document.body.appendChild(cross);
   setTimeout(() => cross.remove(), 1000);
 };
 
 window.addEventListener("click", handleMissClick);
-if (isMobile) window.addEventListener("touchstart", handleMissClick);
+window.addEventListener("touchstart", handleMissClick, { passive: true });
