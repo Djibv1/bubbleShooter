@@ -120,7 +120,7 @@ function createBubble(isSpecial, speed, sizeMin, sizeRange, mode) {
 
 function handleBubbleClick(bubble, isSpecial) {
   bubble.remove();
-  counter += isSpecial ? 6 : 1;
+  counter += isSpecial ? 5 : 1;
   counterDisplay.textContent = counter;
 
   const animClass = isSpecial ? "specialPulse" : "pulse";
@@ -180,6 +180,7 @@ window.addEventListener("click", (e) => {
 
   const ignored = [
     "bubble",
+    "specialBubble",
     "button",
     "button-outer",
     "button-inner",
