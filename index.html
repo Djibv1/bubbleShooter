@@ -7,35 +7,42 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="bg">
-      <h3 class="counter">0</h3>
-      <p class="instructions">Rules</p>
+    <div id="bg"></div>
 
-      <p class="chooseGameMode">Choose your level :</p>
-
-      <div class="buttons">
-        <button class="button" id="B1" onclick="startMode('easy')">
-          <div class="button-outer">
-            <div class="button-inner">
-              <span class="display">Easy Mode</span>
-            </div>
-          </div>
-        </button>
-        <button class="button" id="B2" onclick="startMode('medium')">
-          <div class="button-outer">
-            <div class="button-inner">
-              <span class="display">Medium Mode</span>
-            </div>
-          </div>
-        </button>
-        <button class="button" id="B3" onclick="startMode('hard')">
-          <div class="button-outer">
-            <div class="button-inner">
-              <span class="display">Hard Mode</span>
-            </div>
-          </div>
-        </button>
+    <h3 class="counter">0</h3>
+    <div class="instructions">
+      <h4>Rules :</h4>
+      <div class="setRules">
+        <p>Choose your level to start the game</p>
+        <p>/</p>
+        <p>Glowing Bubbles are worth 5 points</p>
       </div>
+    </div>
+
+    <p class="chooseGameMode">Choose your level :</p>
+
+    <div class="buttons">
+      <button class="button" id="B1" onclick="startMode('easy')">
+        <div class="button-outer">
+          <div class="button-inner">
+            <span class="display">Easy Mode</span>
+          </div>
+        </div>
+      </button>
+      <button class="button" id="B2" onclick="startMode('medium')">
+        <div class="button-outer">
+          <div class="button-inner">
+            <span class="display">Medium Mode</span>
+          </div>
+        </div>
+      </button>
+      <button class="button" id="B3" onclick="startMode('hard')">
+        <div class="button-outer">
+          <div class="button-inner">
+            <span class="display">Hard Mode</span>
+          </div>
+        </div>
+      </button>
     </div>
 
     <script src="index.js"></script>

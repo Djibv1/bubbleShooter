@@ -39,6 +39,16 @@ function startMode(mode) {
   if (mode === "easy") easyMode();
   else if (mode === "medium") mediumMode();
   else if (mode === "hard") hardMode();
+  document.querySelectorAll(".button").forEach((btn) => {
+    btn.classList.remove("active");
+  });
+
+  const activeButton = document.querySelector(
+    `#B${mode === "easy" ? 1 : mode === "medium" ? 2 : 3}`
+  );
+  if (activeButton) {
+    activeButton.classList.add("active");
+  }
 }
 
 function animateBubble(bubble, speedY) {
@@ -79,6 +89,7 @@ function animateBubble(bubble, speedY) {
 // easyMode
 function easyMode() {
   chooseGameMode.classList.add("hidden");
+  instructions.classList.add("hidden");
 
   const bubbleMaker = () => {
     const bubble = document.createElement("span");
@@ -98,6 +109,8 @@ function easyMode() {
     bubble.addEventListener("click", () => {
       counter++;
       counterDisplay.textContent = counter;
+      counterDisplay.classList.add("pulse");
+      setTimeout(() => counterDisplay.classList.remove("pulse"), 100);
       bubble.remove();
     });
 
@@ -123,6 +136,9 @@ function easyMode() {
     specialBubble.addEventListener("click", () => {
       counter += 6;
       counterDisplay.textContent = counter;
+      counterDisplay.classList.add("specialPulse");
+      setTimeout(() => counterDisplay.classList.remove("specialPulse"), 100);
+
       specialBubble.remove();
     });
 
@@ -135,6 +151,7 @@ function easyMode() {
 // mediumMode
 function mediumMode() {
   chooseGameMode.classList.add("hidden");
+  instructions.classList.add("hidden");
 
   const bubbleMaker = () => {
     const bubble = document.createElement("span");
@@ -152,6 +169,8 @@ function mediumMode() {
     bubble.addEventListener("click", () => {
       counter++;
       counterDisplay.textContent = counter;
+      counterDisplay.textContent = counter;
+      counterDisplay.classList.add("pulse");
       bubble.remove();
     });
 
@@ -176,6 +195,8 @@ function mediumMode() {
     specialBubble.addEventListener("click", () => {
       counter += 6;
       counterDisplay.textContent = counter;
+      counterDisplay.textContent = counter;
+      counterDisplay.classList.add("specialPulse");
       specialBubble.remove();
     });
 
@@ -188,6 +209,7 @@ function mediumMode() {
 // hardMode
 function hardMode() {
   chooseGameMode.classList.add("hidden");
+  instructions.classList.add("hidden");
 
   const bubbleMaker = () => {
     const bubble = document.createElement("span");
@@ -205,6 +227,8 @@ function hardMode() {
     bubble.addEventListener("click", () => {
       counter++;
       counterDisplay.textContent = counter;
+      counterDisplay.textContent = counter;
+      counterDisplay.classList.add("pulse");
       bubble.remove();
     });
 
@@ -229,6 +253,8 @@ function hardMode() {
     specialBubble.addEventListener("click", () => {
       counter += 6;
       counterDisplay.textContent = counter;
+      counterDisplay.textContent = counter;
+      counterDisplay.classList.add("specialPulse");
       specialBubble.remove();
     });
 
