@@ -12,6 +12,56 @@ body {
   align-items: center;
 }
 
+/* ✖️ Croix rouge d’erreur */
+.error-cross {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(45deg);
+  opacity: 1;
+  animation: fadeOut 1s forwards;
+  z-index: 9999;
+}
+
+.error-cross::before,
+.error-cross::after {
+  content: "";
+  position: absolute;
+  background-color: red;
+  border-radius: 2px;
+}
+
+.error-cross::before {
+  width: 2px;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.error-cross::after {
+  width: 100%;
+  height: 2px;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(45deg) scale(1);
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(45deg) scale(0.8);
+  }
+}
+
 #bg {
   z-index: -5;
   height: 100%;
@@ -35,10 +85,10 @@ body {
   box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2),
     0 0 20px rgba(255, 255, 255, 0.1);
   transition: transform 0.2s ease, box-shadow 0.3s ease;
-  user-select: none; /* Empêche la sélection du texte */
-  -webkit-user-select: none; /* Pour Safari */
-  -moz-user-select: none; /* Pour Firefox */
-  -ms-user-select: none; /* Pour Internet Explorer */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .counter:hover {
@@ -120,6 +170,10 @@ body {
   animation: slideInUp 0.8s ease forwards;
   opacity: 0;
   transition: opacity 0.5s ease-out, transform 0.5s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .instructions.hidden {
@@ -166,6 +220,10 @@ body {
   transition: opacity 0.5s ease-out, transform 0.5s ease;
   animation: slideInUp 0.8s ease forwards;
   opacity: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .chooseGameMode.hidden {

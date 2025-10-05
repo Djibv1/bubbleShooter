@@ -1,285 +1,208 @@
 const counterDisplay = document.querySelector("h3");
-let counter = 0;
-let intervals = [];
 const instructions = document.querySelector(".instructions");
-
 const chooseGameMode = document.querySelector(".chooseGameMode");
+let counter = 0;
 let modeActive = false;
+let intervals = [];
 
-if (chooseGameMode) {
-  chooseGameMode.addEventListener("click", () => {
-    chooseGameMode.classList.add("hidden");
-  });
-}
+const randomColor = () =>
+  "#" + Math.floor(Math.random() * 16777215).toString(16);
 
-if (instructions) {
-  instructions.addEventListener("click", () => {
-    instructions.classList.add("hidden");
-  });
-}
-
-function randomColor() {
-  return "#" + Math.floor(Math.random() * 16777215).toString(16);
-}
-// Nettoyage des bulles et intervalles
-function stopGame() {
+const resetGame = () => {
   modeActive = false;
-  intervals.forEach((id) => clearInterval(id));
+  intervals.forEach(clearInterval);
   intervals = [];
-  const bulles = document.querySelectorAll("span.bubble, span.specialBubble");
-  bulles.forEach((b) => b.remove());
+  document
+    .querySelectorAll(".bubble, .specialBubble")
+    .forEach((b) => b.remove());
   counter = 0;
-  counterDisplay.textContent = counter;
-}
+  counterDisplay.textContent = 0;
+};
 
-// Lancer mode
 function startMode(mode) {
-  stopGame();
+  resetGame();
   modeActive = true;
-  if (mode === "easy") easyMode();
-  else if (mode === "medium") mediumMode();
-  else if (mode === "hard") hardMode();
-  document.querySelectorAll(".button").forEach((btn) => {
-    btn.classList.remove("active");
-  });
 
-  const activeButton = document.querySelector(
-    `#B${mode === "easy" ? 1 : mode === "medium" ? 2 : 3}`
-  );
-  if (activeButton) {
-    activeButton.classList.add("active");
-  }
+  // Activation d boutons
+  document
+    .querySelectorAll(".button")
+    .forEach((btn) => btn.classList.remove("active"));
+  document
+    .querySelector(`#B${mode === "easy" ? 1 : mode === "medium" ? 2 : 3}`)
+    ?.classList.add("active");
+
+  instructions?.remove();
+  chooseGameMode?.remove();
+
+  const settings = {
+    easy: {
+      bubbleInterval: 1500,
+      speed: 1.5,
+      specialMin: 10000,
+      specialMax: 15000,
+      sizeMin: 150,
+      sizeRange: 100,
+    },
+    medium: {
+      bubbleInterval: 2500,
+      speed: 2.5,
+      specialMin: 12000,
+      specialMax: 17000,
+      sizeMin: 100,
+      sizeRange: 80,
+    },
+    hard: {
+      bubbleInterval: 3000,
+      speed: 3.5,
+      specialMin: 15000,
+      specialMax: 20000,
+      sizeMin: 70,
+      sizeRange: 50,
+    },
+  }[mode];
+
+  spawnBubbles(settings, mode);
 }
 
-function animateBubble(bubble, speedY) {
-  let x = parseFloat(bubble.style.left);
-  let y = parseFloat(bubble.style.top);
+function animateBubble(bubble, vx, vy) {
+  const step = () => {
+    let x = parseFloat(bubble.style.left);
+    let y = parseFloat(bubble.style.top);
 
-  const angle = (Math.random() * 90 - 60) * (Math.PI / 180);
-  let vx = Math.sin(angle) * speedY;
-  let vy = -Math.cos(angle) * speedY;
-
-  function step() {
     x += vx;
     y += vy;
 
+    // rebond + suppression qd hors écran
+    if (x < 0 || x + bubble.offsetWidth > window.innerWidth) vx = -vx;
     if (
       y + bubble.offsetHeight < 0 ||
       x + bubble.offsetWidth < 0 ||
       x > window.innerWidth
-    ) {
-      bubble.remove();
-      return;
-    }
+    )
+      return bubble.remove();
 
-    if (x < 0 || x + bubble.offsetWidth > window.innerWidth) {
-      vx = -vx;
-      x = Math.max(0, Math.min(window.innerWidth - bubble.offsetWidth, x));
-    }
-
-    bubble.style.left = x + "px";
+    bubble.style.left =
+      Math.max(0, Math.min(window.innerWidth - bubble.offsetWidth, x)) + "px";
     bubble.style.top = y + "px";
 
     requestAnimationFrame(step);
-  }
-
+  };
   requestAnimationFrame(step);
 }
 
-// easyMode
-function easyMode() {
-  chooseGameMode.classList.add("hidden");
-  instructions.classList.add("hidden");
+/* Génération de bulles */
+function createBubble(isSpecial, speed, sizeMin, sizeRange, mode) {
+  const bubble = document.createElement("span");
+  const size = Math.random() * sizeRange + sizeMin;
+  const left = Math.random() * (window.innerWidth - size);
 
-  const bubbleMaker = () => {
-    const bubble = document.createElement("span");
-    const c1 = randomColor();
-    bubble.classList.add("bubble", "easyBubble");
-    bubble.style.background = `radial-gradient(circle at center, ${c1})`;
-    document.body.appendChild(bubble);
+  bubble.className = isSpecial
+    ? `specialBubble special${capitalize(mode)}Bubble`
+    : `bubble ${mode}Bubble`;
 
-    const size = Math.random() * 100 + 150;
-    bubble.style.width = size + "px";
-    bubble.style.height = size + "px";
+  bubble.style.width = bubble.style.height = `${size}px`;
+  bubble.style.left = `${left}px`;
+  bubble.style.top = `${window.innerHeight + size}px`;
 
-    const maxLeft = window.innerWidth - size;
-    bubble.style.left = Math.random() * maxLeft + "px";
-    bubble.style.top = window.innerHeight + size + "px";
+  if (!isSpecial)
+    bubble.style.background = `radial-gradient(circle at center, ${randomColor()})`;
 
-    bubble.addEventListener("click", () => {
-      counter++;
-      counterDisplay.textContent = counter;
-      counterDisplay.classList.add("pulse");
-      setTimeout(() => counterDisplay.classList.remove("pulse"), 100);
-      bubble.remove();
-    });
+  document.body.appendChild(bubble);
 
-    animateBubble(bubble, 1.5);
-  };
+  const angle = (Math.random() * 90 - 60) * (Math.PI / 180);
+  const vx = Math.sin(angle) * speed;
+  const vy = -Math.cos(angle) * speed;
 
-  intervals.push(setInterval(bubbleMaker, 1500));
+  bubble.addEventListener("click", () => handleBubbleClick(bubble, isSpecial));
 
-  // special bubble
-  const specialBubbleMaker = () => {
-    const specialBubble = document.createElement("span");
-    specialBubble.classList.add("specialBubble", "specialEasyBubble");
-    document.body.appendChild(specialBubble);
-
-    const size = Math.random() * 100 + 180;
-    specialBubble.style.width = size + "px";
-    specialBubble.style.height = size + "px";
-
-    const maxLeft = window.innerWidth - size;
-    specialBubble.style.left = Math.random() * maxLeft + "px";
-    specialBubble.style.top = window.innerHeight + size + "px";
-
-    specialBubble.addEventListener("click", () => {
-      counter += 6;
-      counterDisplay.textContent = counter;
-      counterDisplay.classList.add("specialPulse");
-      setTimeout(() => counterDisplay.classList.remove("specialPulse"), 100);
-
-      specialBubble.remove();
-    });
-
-    animateBubble(specialBubble, 2);
-  };
-
-  intervals.push(setInterval(specialBubbleMaker, Math.random() * 5000 + 10000));
+  animateBubble(bubble, vx, vy);
 }
 
-// mediumMode
-function mediumMode() {
-  chooseGameMode.classList.add("hidden");
-  instructions.classList.add("hidden");
+function handleBubbleClick(bubble, isSpecial) {
+  bubble.remove();
+  counter += isSpecial ? 6 : 1;
+  counterDisplay.textContent = counter;
 
-  const bubbleMaker = () => {
-    const bubble = document.createElement("span");
-    bubble.classList.add("bubble", "mediumBubble");
-    document.body.appendChild(bubble);
-
-    const size = Math.random() * 80 + 100;
-    bubble.style.width = size + "px";
-    bubble.style.height = size + "px";
-
-    const maxLeft = window.innerWidth - size;
-    bubble.style.left = Math.random() * maxLeft + "px";
-    bubble.style.top = window.innerHeight + size + "px";
-
-    bubble.addEventListener("click", () => {
-      counter++;
-      counterDisplay.textContent = counter;
-      counterDisplay.textContent = counter;
-      counterDisplay.classList.add("pulse");
-      bubble.remove();
-    });
-
-    animateBubble(bubble, 2.5);
-  };
-
-  intervals.push(setInterval(bubbleMaker, 2500));
-
-  const specialBubbleMaker = () => {
-    const specialBubble = document.createElement("span");
-    specialBubble.classList.add("specialBubble", "specialMediumBubble");
-    document.body.appendChild(specialBubble);
-
-    const size = Math.random() * 80 + 130;
-    specialBubble.style.width = size + "px";
-    specialBubble.style.height = size + "px";
-
-    const maxLeft = window.innerWidth - size;
-    specialBubble.style.left = Math.random() * maxLeft + "px";
-    specialBubble.style.top = window.innerHeight + size + "px";
-
-    specialBubble.addEventListener("click", () => {
-      counter += 6;
-      counterDisplay.textContent = counter;
-      counterDisplay.textContent = counter;
-      counterDisplay.classList.add("specialPulse");
-      specialBubble.remove();
-    });
-
-    animateBubble(specialBubble, 3);
-  };
-
-  intervals.push(setInterval(specialBubbleMaker, Math.random() * 5000 + 12000));
+  const animClass = isSpecial ? "specialPulse" : "pulse";
+  counterDisplay.classList.add(animClass);
+  setTimeout(
+    () => counterDisplay.classList.remove(animClass),
+    isSpecial ? 150 : 100
+  );
 }
 
-// hardMode
-function hardMode() {
-  chooseGameMode.classList.add("hidden");
-  instructions.classList.add("hidden");
+/*  spawn bulles et bulles spéciales */
+function spawnBubbles(
+  { bubbleInterval, speed, specialMin, specialMax, sizeMin, sizeRange },
+  mode
+) {
+  intervals.push(
+    setInterval(() => {
+      createBubble(false, speed, sizeMin, sizeRange, mode);
+    }, bubbleInterval)
+  );
 
-  const bubbleMaker = () => {
-    const bubble = document.createElement("span");
-    bubble.classList.add("bubble", "hardBubble");
-    document.body.appendChild(bubble);
+  const specialDelays = {
+    easy: { min: 5000, max: 20000 },
 
-    const size = Math.random() * 50 + 70;
-    bubble.style.width = size + "px";
-    bubble.style.height = size + "px";
+    medium: { min: 8000, max: 25000 },
 
-    const maxLeft = window.innerWidth - size;
-    bubble.style.left = Math.random() * maxLeft + "px";
-    bubble.style.top = window.innerHeight + size + "px";
-
-    bubble.addEventListener("click", () => {
-      counter++;
-      counterDisplay.textContent = counter;
-      counterDisplay.textContent = counter;
-      counterDisplay.classList.add("pulse");
-      bubble.remove();
-    });
-
-    animateBubble(bubble, 3.5);
+    hard: { min: 10000, max: 30000 },
   };
 
-  intervals.push(setInterval(bubbleMaker, 1000));
+  const { min, max } = specialDelays[mode];
 
-  const specialBubbleMaker = () => {
-    const specialBubble = document.createElement("span");
-    specialBubble.classList.add("specialBubble", "specialHardBubble");
-    document.body.appendChild(specialBubble);
+  const initialSpecialDelay = Math.random() * (max - min) + min;
 
-    const size = Math.random() * 50 + 100;
-    specialBubble.style.width = size + "px";
-    specialBubble.style.height = size + "px";
+  setTimeout(() => {
+    if (!modeActive) return;
 
-    const maxLeft = window.innerWidth - size;
-    specialBubble.style.left = Math.random() * maxLeft + "px";
-    specialBubble.style.top = window.innerHeight + size + "px";
+    const spawnSpecial = () => {
+      if (!modeActive) return;
+      createBubble(true, speed + 0.5, sizeMin - 15, sizeRange - 15, mode);
+      intervals.push(
+        setTimeout(
+          spawnSpecial,
+          Math.random() * (specialMax - specialMin) + specialMin
+        )
+      );
+    };
 
-    specialBubble.addEventListener("click", () => {
-      counter += 6;
-      counterDisplay.textContent = counter;
-      counterDisplay.textContent = counter;
-      counterDisplay.classList.add("specialPulse");
-      specialBubble.remove();
-    });
-
-    animateBubble(specialBubble, 4);
-  };
-
-  intervals.push(setInterval(specialBubbleMaker, Math.random() * 5000 + 15000));
+    spawnSpecial();
+  }, initialSpecialDelay);
 }
 
-// perdre des points si clic ailleurs
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+/* malus si clic ailleurs + croix rouge */
 window.addEventListener("click", (e) => {
-  console.log(e.target);
+  if (!modeActive) return;
 
-  if (
-    modeActive &&
-    !e.target.classList.contains("bubble") &&
-    !e.target.classList.contains("button") &&
-    !e.target.classList.contains("button-outer") &&
-    !e.target.classList.contains("button-inner") &&
-    !e.target.classList.contains("display") &&
-    !e.target.classList.contains("counter") &&
-    !e.target.classList.contains("instructions") &&
-    !e.target.classList.contains("chooseGameMode")
-  ) {
+  const ignored = [
+    "bubble",
+    "button",
+    "button-outer",
+    "button-inner",
+    "display",
+    "counter",
+  ];
+
+  const isAllowed = ignored.some((cls) => e.target.classList.contains(cls));
+
+  if (!isAllowed) {
+    // Décrémenter le score
     counter--;
     counterDisplay.textContent = counter;
+
+    // Afficher une petite croix rouge à la position du clic
+    const cross = document.createElement("div");
+    cross.classList.add("error-cross");
+    cross.style.left = `${e.clientX}px`;
+    cross.style.top = `${e.clientY}px`;
+
+    document.body.appendChild(cross);
+
+    // Supprimer la croix après 1s
+    setTimeout(() => cross.remove(), 1000);
   }
 });
