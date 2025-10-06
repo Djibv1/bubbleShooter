@@ -1,7 +1,7 @@
  <h2 align="center">Projet de Bubble Shooter</h2>
  <p align="center">Un projet qui partait de pas grand chose mais que j'ai beaucoup aimé améliorer et custom selon ma vision</p>
 <p align="center">
-<a href="https://www.paypal.me/anuraghazra">Si vous voulez l'essayer !</a></p>
+<a href="https://djibv1.github.io/bubbleShooter/">Si vous voulez l'essayer !</a></p>
 
 <p align="center">N'hésitez pas à donner un coup de pouce en proposant des améliorations !
 
