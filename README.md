@@ -8,7 +8,7 @@
 <h4 align="center">Les pistes de réflexion : </h4>
 
 <p align="center">
-<h5>Fonctionnement :</h5>
+<h5 align="center">Fonctionnement :</h5>
 <p align="center">
 - Sons à l'éclatement des bruits et quand clic raté <br>
 - Responsive pour fonctionnement d bulles (improvements)<br>
